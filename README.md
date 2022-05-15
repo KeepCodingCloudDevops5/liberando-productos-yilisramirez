@@ -163,7 +163,9 @@ Y lanzamos la prueba de estres dentro del pod
 Comprobamos que recibimos notificaciones del alert manager configurado en slack
 ![monitoring alert](https://user-images.githubusercontent.com/39458920/168487265-9c8171c0-26c8-4e86-9e37-0160704fa71f.JPG)
 
-Hacemos un port-forward al servicio de monitorización de Grafana 
+Hacemos un port-forward al servicio de monitorización de Grafana e importamos el dashboard encontrado aqui, para monitorizar:
+- El número de llamadas a los endpoints
+- El número de veces que la aplicación ha arrancado
 ```bash
 kubectl -n monitoring port-forward svc/prometheus-grafana 3000:3000
 ```
