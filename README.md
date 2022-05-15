@@ -115,3 +115,13 @@ minikube addons enable metrics-server -p fastapi
     ▪ Using image k8s.gcr.io/metrics-server/metrics-server:v0.4.2
 🌟  The 'metrics-server' addon is enabled
 ```
+Creación de un helm chart de la aplicación
+```bash
+helm dep up fast-api-webapp
+```
+Desplegamos la aplicación y observamos los pods creados
+
+```bash
+helm -n fast-api upgrade my-app --install --create-namespace fast-api-webapp
+kubectl -n fast-api get po -w
+```
