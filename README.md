@@ -103,3 +103,15 @@ prometheus-kube-state-metrics-94f76f559-6cm5r            1/1     Running   0    
 prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0          11m   172.17.0.7     fastapi   <none>           <none>
 prometheus-prometheus-node-exporter-qx7xr                1/1     Running   0          11m   192.168.49.2   fastapi   <none>           <none>
 ```
+Añadimos el repositorio de helm bitnami, que es el que permite el despliegue en HA (alta disponibilidad)
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+```
+Habilitamos el metric server al cluster creado anteriormente `fastapi`, que es quien va a permitir autoescalar
+```bash
+minikube addons enable metrics-server -p fastapi
+    ▪ Using image k8s.gcr.io/metrics-server/metrics-server:v0.4.2
+🌟  The 'metrics-server' addon is enabled
+```
