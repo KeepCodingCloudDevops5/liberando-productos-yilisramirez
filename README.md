@@ -119,9 +119,44 @@ Creación de un helm chart de la aplicación
 ```bash
 helm dep up fast-api-webapp
 ```
-Desplegamos la aplicación y observamos los pods creados
+Desplegamos la aplicación y observamos los pods estan siendo creados
 
 ```bash
 helm -n fast-api upgrade my-app --install --create-namespace fast-api-webapp
 kubectl -n fast-api get po -w
+```
+```bash
+NAME                                      READY   STATUS              RESTARTS   AGE
+my-app-fast-api-webapp-5cb74848bd-bdlrq   0/1     Init:0/1            0          20s
+my-app-mongodb-7d7d86796b-rp9gn           0/2     ContainerCreating   0          20s
+my-app-mongodb-7d7d86796b-rp9gn           0/2     Running             0          60s
+my-app-mongodb-7d7d86796b-rp9gn           1/2     Running             0          61s
+my-app-mongodb-7d7d86796b-rp9gn           2/2     Running             0          67s
+my-app-fast-api-webapp-5cb74848bd-bdlrq   0/1     PodInitializing     0          70s
+my-app-fast-api-webapp-5cb74848bd-bdlrq   0/1     Running             0          2m5s
+my-app-fast-api-webapp-5cb74848bd-bdlrq   1/1     Running             0          2m10s
+```
+Simulamos una prueba de estres para visualizar el autoescalado.
+Para ello nos conectamos al siguiente pod.
+```bash
+export POD_NAME=$(kubectl get pods --namespace fast-api -l "app.kubernetes.io/name=fast-api-webapp,app.kubernetes.io/instance=my-app" -o jsonpath="{.items[0].metadata.name}")
+```
+Accedemos a una shell interactiva
+```bash
+kubectl -n fast-api exec --stdin --tty $POD_NAME -- /bin/sh
+```
+Una vez dentro de la shell, instalamos los binarios necesarios
+```bash
+apk update && apk add git go
+```
+Descargamos el siguiente repositorio y accedemos a èl.
+
+```bash
+git clone https://github.com/jaeg/NodeWrecker.git
+cd NodeWrecker
+go build -o extress main.go
+```
+Y lanzamos la prueba de estres dentro del pod
+```bash
+./extress -abuse-memory -escalate -max-duration 10000000
 ```
