@@ -161,11 +161,18 @@ Y lanzamos la prueba de estres dentro del pod
 ./extress -abuse-memory -escalate -max-duration 10000000
 ```
 Comprobamos que recibimos notificaciones del alert manager configurado en slack
-![monitoring alert](https://user-images.githubusercontent.com/39458920/168487265-9c8171c0-26c8-4e86-9e37-0160704fa71f.JPG)
+![monitoring alert1](https://user-images.githubusercontent.com/39458920/168493253-de63d480-1404-4003-950a-7a903c908fbf.JPG)
 
-Hacemos un port-forward al servicio de monitorización de Grafana e importamos el dashboard encontrado aqui, para monitorizar:
+Hacemos un port-forward al servicio de monitorización de Grafana e importamos el dashboard encontrado  
+[aqui,](https://github.com/KeepCodingCloudDevops5/liberando-productos-yilisramirez/blob/main/custom_dashboard.json) para monitorizar:
 - El número de llamadas a los endpoints
 - El número de veces que la aplicación ha arrancado
 ```bash
 kubectl -n monitoring port-forward svc/prometheus-grafana 3000:3000
 ```
+Para ello debemos simular una serie de solicitudes a los diferentes endpoints, por lo que tendremos que acceder al <b>Fast API Swagger</b> haciendo localhost al puerto 8081 
+
+```bash
+kubectl -n fast-api port-forward svc/my-app-fast-api-webapp 8081:8081
+```
+![endpoint bye](https://user-images.githubusercontent.com/39458920/168493250-b4859cf7-ec42-4e6a-92d9-54e48bc95c98.JPG)
