@@ -74,14 +74,13 @@ Required test coverage of 80.0% reached. Total coverage: 94.20%
  ```bash 
  minikube start -p fastapi
  ```
- Configuramos las alarmas de Alert-manager en slack, añadiendo la app webhook y conectandolo al canal `#yilis-ramirez-prometheus-alarms`
+ Configuramos las alarmas de Alert-manager en slack, añadiendo la app webhook y conectandolo al canal `#yilis-ramirez-prometheus-alarms` con el objetivo de monitorizar el consumo de uso de la CPU enviando alertas con impacto critical y severity, y tambien informará cuando estas esten ya restablecidas.
  ```bash
  slack_configs:
       - api_url: 'https://hooks.slack.com/services/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' # <--- AÑADIR EN ESTA LÍNEA EL WEBHOOK CREADO
         send_resolved: true
         channel: '#yilis-ramirez-prometheus-alarms'
  ```
- 
   Añadimos el repositorio de `Helm prometheus community`
  
  ```bash
@@ -91,4 +90,16 @@ Required test coverage of 80.0% reached. Total coverage: 94.20%
 Desplegamos el chart de kube-prometheus-stack del helm añadido anteriormente con los valores definidos en el fichero `custom_values_prometheus.yaml`
 ```bash
 helm -n monitoring upgrade --install prometheus prometheus-community/kube-prometheus-stack -f custom_values_prometheus.yaml --create-namespace --wait --version 34.1.1
+```
+
+Verificamos que los pods han sido creados correctamente para el stack de monitoring
+```bash
+kubectl get po -n monitoring -o wide
+NAME                                                     READY   STATUS    RESTARTS   AGE   IP             NODE      NOMINATED NODE   READINESS GATES
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0          11m   172.17.0.6     fastapi   <none>           <none>
+prometheus-grafana-65fcd9964b-ndmf8                      3/3     Running   0          11m   172.17.0.5     fastapi   <none>           <none>
+prometheus-kube-prometheus-operator-7f7b975f97-hk8dh     1/1     Running   0          11m   172.17.0.4     fastapi   <none>           <none>
+prometheus-kube-state-metrics-94f76f559-6cm5r            1/1     Running   0          11m   172.17.0.3     fastapi   <none>           <none>
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0          11m   172.17.0.7     fastapi   <none>           <none>
+prometheus-prometheus-node-exporter-qx7xr                1/1     Running   0          11m   192.168.49.2   fastapi   <none>           <none>
 ```
