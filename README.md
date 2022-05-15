@@ -74,3 +74,21 @@ Required test coverage of 80.0% reached. Total coverage: 94.20%
  ```bash 
  minikube start -p fastapi
  ```
+ Configuramos las alarmas de Alert-manager en slack, añadiendo la app webhook y conectandolo al canal `#yilis-ramirez-prometheus-alarms`
+ ```bash
+ slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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' # <--- AÑADIR EN ESTA LÍNEA EL WEBHOOK CREADO
+        send_resolved: true
+        channel: '#yilis-ramirez-prometheus-alarms'
+ ```
+ 
+  Añadimos el repositorio de `Helm prometheus community`
+ 
+ ```bash
+ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+ helm repo update
+```
+Desplegamos el chart de kube-prometheus-stack del helm añadido anteriormente con los valores definidos en el fichero `custom_values_prometheus.yaml`
+```bash
+helm -n monitoring upgrade --install prometheus prometheus-community/kube-prometheus-stack -f custom_values_prometheus.yaml --create-namespace --wait --version 34.1.1
+```
