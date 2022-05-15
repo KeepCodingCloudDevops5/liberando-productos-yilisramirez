@@ -72,7 +72,7 @@ Required test coverage of 80.0% reached. Total coverage: 94.20%
 
 - Creación del Helm chart para desplegar la aplicación en Kubernetes. Para ello inicializamos un minikube que lleva por nombre `fastapi`
  ```bash 
- minikube start -p fastapi
+ minikube start -p monitoring-demo
  ```
  Configuramos las alarmas de Alert-manager en slack, añadiendo la app webhook y conectandolo al canal `#yilis-ramirez-prometheus-alarms` con el objetivo de monitorizar el consumo de uso de la CPU enviando alertas con impacto critical y severity, y tambien informará cuando estas esten ya restablecidas.
  ```bash
@@ -111,7 +111,7 @@ helm repo update
 ```
 Habilitamos el metric server al cluster creado anteriormente `fastapi`, que es quien va a permitir autoescalar
 ```bash
-minikube addons enable metrics-server -p fastapi
+minikube addons enable metrics-server -p monitoring-demo
     ▪ Using image k8s.gcr.io/metrics-server/metrics-server:v0.4.2
 🌟  The 'metrics-server' addon is enabled
 ```
@@ -159,4 +159,11 @@ go build -o extress main.go
 Y lanzamos la prueba de estres dentro del pod
 ```bash
 ./extress -abuse-memory -escalate -max-duration 10000000
+```
+Comprobamos que recibimos notificaciones del alert manager configurado en slack
+![monitoring alert](https://user-images.githubusercontent.com/39458920/168487265-9c8171c0-26c8-4e86-9e37-0160704fa71f.JPG)
+
+Hacemos un port-forward al servicio de monitorización de Grafana 
+```bash
+kubectl -n monitoring port-forward svc/prometheus-grafana 3000:3000
 ```
