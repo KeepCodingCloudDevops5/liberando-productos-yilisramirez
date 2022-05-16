@@ -170,9 +170,12 @@ Hacemos un port-forward al servicio de monitorización de Grafana e importamos e
 ```bash
 kubectl -n monitoring port-forward svc/prometheus-grafana 3000:3000
 ```
-Para ello debemos simular una serie de solicitudes a los diferentes endpoints, por lo que tendremos que acceder al <b>Fast API Swagger</b> haciendo localhost al puerto 8081 
+Para ello debemos simular una serie de llamadas a los diferentes endpoints, por lo que tendremos que acceder al <b>Fast API Swagger</b> haciendo localhost al puerto 8081 
 
 ```bash
 kubectl -n fast-api port-forward svc/my-app-fast-api-webapp 8081:8081
 ```
 ![endpoint bye](https://user-images.githubusercontent.com/39458920/168493250-b4859cf7-ec42-4e6a-92d9-54e48bc95c98.JPG)
+
+Una vez importado el dashboard en Grafana podemos visualizar las diferentes llamadas a los endpoints:
+![dashboardendpoint](https://user-images.githubusercontent.com/39458920/168553853-9ae6bfa1-8c4a-4401-a989-2acdf9da01ae.JPG)
