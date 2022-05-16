@@ -179,3 +179,10 @@ kubectl -n fast-api port-forward svc/my-app-fast-api-webapp 8081:8081
 
 Una vez importado el dashboard en Grafana podemos visualizar las diferentes llamadas a los endpoints:
 ![dashboardendpoint](https://user-images.githubusercontent.com/39458920/168553853-9ae6bfa1-8c4a-4401-a989-2acdf9da01ae.JPG)
+
+
+- Creación de un pipeline en Gitbhub actions para la ejecución de test unitarios de la aplicación
+![unit-tests](https://user-images.githubusercontent.com/39458920/168586697-d1704774-30a9-44e5-80f2-9154a9a30882.JPG)
+
+- Creación de un pipeline en Gitbhub actions para la creación de una imagen Docker y push al registro de GHCR
+ ![docker build y push](https://user-images.githubusercontent.com/39458920/168586722-438f03ed-5f36-4847-b999-0ae0503fc2ff.JPG)
